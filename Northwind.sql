@@ -1,16 +1,16 @@
 -- 1- Liste des clients français :
-SELECT CompanyName AS Société, ContactName AS contact, ContactTitle AS Fonction, Phone AS Téléphone
+SELECT CompanyName AS 'Société', ContactName AS 'contact', ContactTitle AS 'Fonction', Phone AS 'Téléphone'
 FROM customers
 WHERE Country = 'France'
 
 -- 2- Liste des produits vendus par le fournisseur "Exotic Liquids" :
-SELECT ProductName AS Produit, UnitPrice AS Prix
+SELECT ProductName AS 'Produit', UnitPrice AS 'Prix'
 FROM products
 INNER JOIN suppliers ON products.SupplierID = suppliers.SupplierID
 WHERE CompanyName = 'Exotic Liquids'
 
 -- 3- Nombre de produits mis à disposition par les fournisseurs français (tri par nombre de produits décroissant) :
-SELECT CompanyName AS Fournisseur, COUNT(ProductName) AS Nbre_produits
+SELECT CompanyName AS 'Fournisseur', COUNT(ProductName) AS 'Nbre produits'
 FROM products
 INNER JOIN suppliers ON products.SupplierID = suppliers.SupplierID
 WHERE suppliers.Country = 'France'
@@ -18,7 +18,7 @@ GROUP BY CompanyName
 ORDER BY Nbre_produits DESC
 
 -- 4- Liste des clients français ayant passé plus de 10 commandes :
-SELECT CompanyName AS 'client', COUNT(orders.OrderID) AS Nbre_Commande
+SELECT CompanyName AS 'client', COUNT(orders.OrderID) AS 'Nbre Commande'
 FROM customers
 INNER JOIN orders ON customers.CustomerID = orders.CustomerID
 WHERE customers.Country = 'France' 
@@ -26,7 +26,7 @@ GROUP BY CompanyName
 HAVING Count(orders.orderID)>10
 
 -- 5- Liste des clients dont le montant cumulé de toutes les commandes passées est supérieur à 30000 € :
-SELECT CompanyName AS 'Client', SUM(UnitPrice*Quantity), Country
+SELECT CompanyName AS 'Client', SUM(UnitPrice*Quantity) AS 'CA', Country AS 'Pays'
 FROM customers
 INNER JOIN orders ON customers.CustomerID = orders.CustomerID
 INNER JOIN `order details` ON orders.OrderID = `order details`.OrderID
@@ -35,7 +35,7 @@ HAVING SUM(UnitPrice*Quantity) > 30000
 ORDER BY SUM(UnitPrice*Quantity) DESC
 
 -- 6- Liste des pays dans lesquels des produits fournis par "Exotic Liquids" ont été livrés :
-SELECT ShipCountry
+SELECT ShipCountry AS 'Pays'
 FROM suppliers
 INNER JOIN products ON suppliers.SupplierID = products.SupplierID
 INNER JOIN `order details` ON products.ProductID = `order details`.ProductID
